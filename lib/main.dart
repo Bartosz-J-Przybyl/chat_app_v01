@@ -1,3 +1,4 @@
+import 'package:chat_app_v01/screens/auth.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -11,10 +12,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: const Color.fromARGB(255, 9, 128, 108),
+        ),
         useMaterial3: true,
       ),
-      home: Scaffold(),
+      home: AuthScreen(),
     );
   }
 }
