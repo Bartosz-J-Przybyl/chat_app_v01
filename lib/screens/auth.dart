@@ -1,5 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/foundation.dart';
+
 import 'package:flutter/material.dart';
 
 final _firebase = FirebaseAuth.instance;
@@ -22,23 +22,24 @@ class _AuthScreenState extends State<AuthScreen> {
     if (!isValid) {
       return;
     }
-    if (isValid) {
-      _formKey.currentState!.save();
-    }
-    if (_isLogin) {
-    } else {
-      try {
+    _formKey.currentState!.save();
+    try {
+      if (_isLogin) {
+        final userCredentials = await _firebase.signInWithEmailAndPassword(
+            email: _enteredEmail, password: _enteredPassword);
+        _formKey.currentState!.save();
+      } else {
         final userCredentials = await _firebase.createUserWithEmailAndPassword(
             email: _enteredEmail, password: _enteredPassword);
-      } on FirebaseAuthException catch (error) {
-        if (error.code == "email already in use") {}
-        ScaffoldMessenger.of(context).clearSnackBars();
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(error.message ?? "error"),
-          ),
-        );
       }
+    } on FirebaseAuthException catch (error) {
+      if (error.code == "email already in use") {}
+      ScaffoldMessenger.of(context).clearSnackBars();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(error.message ?? "error"),
+        ),
+      );
     }
   }
 
